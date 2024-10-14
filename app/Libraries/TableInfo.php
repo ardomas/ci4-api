@@ -2,13 +2,10 @@
 
 namespace App\Libraries;
 
-// use App\Config\Database;
-
 class TableInfo {
 
     protected $db;
     protected $table_schema;
-    // protected $table_info;
 
     public function __construct($dbconf=null){
         if(is_null($dbconf)){ 
