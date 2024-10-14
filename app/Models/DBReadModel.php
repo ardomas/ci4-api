@@ -72,7 +72,6 @@ class DBReadModel extends Model {
             }
             //
             if( !isset( $this->DBGroup ) ){
-                // $this->DBGroup = 'default';
                 die( 'DBGroup harus ada' );
             }
             if( !isset( $this->table ) ){
@@ -125,11 +124,6 @@ class DBReadModel extends Model {
     }
     public function getidx($objcond=null){
         $this->getwhere();
-        // if(!is_null($objcond)){
-        //     $this->where = $objcond;
-        // }
-        // $this->_getFromTableOrCache();
-        // $this->_data_indexed();
         return $this->_data_idx;
     }
 
@@ -139,10 +133,6 @@ class DBReadModel extends Model {
         if( isset( $this->primaryKey ) ){
             $rows = array_column( $temp, null, $this->primaryKey );
         }
-        // foreach( $temp as $row ){
-        //     $key = $row[ $this->primaryKey ];
-        //     $rows[$key] = $row;
-        // }
         return $rows;
     }
 
@@ -156,7 +146,7 @@ class DBReadModel extends Model {
     public function getwhere($obj=null){
         //
         $result = false;
-        // if( !is_null( $this->DBGroup ) ){
+        //
         if( !is_null($obj) ){
             $this->where = $obj;
             $this->forceLoad = true;
@@ -202,11 +192,6 @@ class DBReadModel extends Model {
         if( isset( $this->primaryKey ) ){
             $obj = array_column( $arr, null, $this->primaryKey );
         }
-        // foreach( $arr as $row ){
-        //     $fk = $this->primaryKey;
-        //     $pk = $row[$fk];
-        //     $obj[$pk] = $row;
-        // }
         return $obj;
     }
 
@@ -243,7 +228,6 @@ class DBReadModel extends Model {
     }
 
     protected function _get_from_list($key=null){
-        //
         $data = Array();
         if( isset( $key ) ){
             $list = $this->_data_idx;
@@ -308,12 +292,6 @@ class DBReadModel extends Model {
         $tmp_data_idx = Array();
         if( isset( $this->primaryKey ) ){
             $tmp_data_idx = array_column( $this->_data_raw, null, $this->primaryKey );
-            // foreach( $this->_data_raw as $row ){
-            //     if( isset( $row[$this->primaryKey] ) ){
-            //         $key = $row[$this->primaryKey];
-            //         $tmp_data_idx[$key] = $row;
-            //     }
-            // }
         }
         $this->_data_idx = $tmp_data_idx;
     }
@@ -322,7 +300,6 @@ class DBReadModel extends Model {
         $obj_sql = null;
         if( is_null($this->where) ){
             $this->forceLoad = true;
-            // $this->where = '1=1';
             if( is_string( $this->filters ) ){
                 if( trim($this->filters)!='' ){
                     $this->where = $this->filters;

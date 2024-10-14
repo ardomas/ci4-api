@@ -18,8 +18,6 @@ class DBTreeModel extends DBReadModel {
     protected $db;
 
     public function __construct($params=null){
-        // if(is_null($dbconf)){ die('something missing'); }
-        // parent::__construct($dbconf);
         parent::__construct($params);
         if( is_null($this->treeAlias) ){ $this->treeAlias = 'tree'; }
         $this->sql_object = $this->get_sql_command();
@@ -27,7 +25,6 @@ class DBTreeModel extends DBReadModel {
     }
 
     public function getDataTree(){
-        // return $this->_array2tree( $this->getlist() );
         $this->get();
         $full_data = $this->_result;
         $tree_data = $this->_array2tree( $this->_data_idx );
