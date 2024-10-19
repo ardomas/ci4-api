@@ -72,6 +72,7 @@ class DBReadModel extends Model {
             }
             //
             if( !isset( $this->DBGroup ) ){
+                // $this->DBGroup = 'default';
                 die( 'DBGroup harus ada' );
             }
             if( !isset( $this->table ) ){
@@ -154,12 +155,13 @@ class DBReadModel extends Model {
         $this->_getFromTableOrCache();
     }
 
-    public function clear_filter(){ $this->filters = []; }
+    public function clear_filter(){ $this->filters = []; $this->setForceLoad(true); }
 
     public function set_filter($fld,$val){ 
         $filters = $this->fiters;
         if( is_string( $val ) || is_array( $val ) ){
             $filters[$fld] = $val;
+            $this->setForceLoad(true);
         }
         $this->filters = $filters;
     }
@@ -204,6 +206,7 @@ class DBReadModel extends Model {
     }
     public function setFilter( $array ){
         $this->filters = $array;
+        $this->setFoceLoad(true);
     }
 
     public function generate_allowedFields(){
@@ -222,12 +225,13 @@ class DBReadModel extends Model {
 
     public function get_sql_command(){
         if( is_null($this->sql_object) ){
-            $this->sql_object = $this->_generate_sql_string();
+            $this->sql_object = $this->_create_sql_object();
         }
         return $this->sql_object;
     }
 
     protected function _get_from_list($key=null){
+        //
         $data = Array();
         if( isset( $key ) ){
             $list = $this->_data_idx;
@@ -272,7 +276,7 @@ class DBReadModel extends Model {
 
     protected function _get_data_from_db(){
         if( is_null($this->sql_object) ){
-            $this->sql_object = $this->_generate_sql_string();
+            $this->sql_object = $this->_create_sql_object();
         }
         $this->_last_update = $this->table_info->getLastUpdate( $this->table );
         $this->_data_raw = $this->sql_object->get()->getResultArray();
@@ -296,10 +300,11 @@ class DBReadModel extends Model {
         $this->_data_idx = $tmp_data_idx;
     }
 
-    protected function _generate_sql_string(){
+    protected function _create_sql_object(){
         $obj_sql = null;
         if( is_null($this->where) ){
             $this->forceLoad = true;
+            // $this->where = '1=1';
             if( is_string( $this->filters ) ){
                 if( trim($this->filters)!='' ){
                     $this->where = $this->filters;
